@@ -6,19 +6,19 @@
 #
 # Account
 #SBATCH --account=ISAAC-UTK0319
-
+#
 # Partition
 #SBATCH --partition=campus
 #SBATCH --qos=campus
 #
-# Number of MPI tasks needed for use case (example):
-#SBATCH --ntasks=96
+# Number nodes
+#SBATCH --nodes=1
 #
-# Processors per task:
-#SBATCH --cpus-per-task=1
+# CPUs per node
+#SBATCH --ntasks-per-node=48
 #
 # Wall clock limit:
-#SBATCH --time=00:10:00
+#SBATCH --time=00:05:00
 #
 # Email me when done
 #SBATCH --mail-type=ALL
