@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <math.h>
+//#include <math.h>
 #include "mpi.h"
 
 int main(int argc, char **argv ) {
@@ -22,7 +22,7 @@ int main(int argc, char **argv ) {
 
     // send messages of size 2 byte -> 1 GB
     for (int i = 1; i <= 30; i++) {
-        num_bytes = pow(2, i);
+        num_bytes = 1 << i;
         size_t size = (size_t) num_bytes;
         char* rand_text = (char*) malloc(size);
 
