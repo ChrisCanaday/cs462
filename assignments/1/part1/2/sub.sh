@@ -12,7 +12,7 @@
 #SBATCH --qos=campus
 #
 # Number nodes
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #
 # CPUs per node
 #SBATCH --ntasks-per-node=48

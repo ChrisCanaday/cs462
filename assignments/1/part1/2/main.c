@@ -21,6 +21,11 @@ int main(int argc, char **argv ) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     printf("rank %d || size %d\n", rank, size);
 
+    if (size < 96) {
+        MPI_Finalize();
+        return;
+    }
+
     // send messages of size 2 byte -> 1 GB
     for (int i = 1; i <= 30; i++) {
         num_bytes = 1 << i;
