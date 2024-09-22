@@ -1,5 +1,5 @@
 all:
-	mpicc main.c -lm
+	mpicc main.c
 
 clean:
 	rm a.out
