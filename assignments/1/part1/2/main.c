@@ -20,7 +20,7 @@ int main(int argc, char **argv ) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     if (rank == 0 || rank == 95) {
-        for (int reps = 0; reps < 20){
+        for (int reps = 0; reps < 10; reps++){
             // send messages of size 2 byte -> 1 GB
             for (int i = 1; i <= 30; i++) {
                 size_t size = 1 << i;
