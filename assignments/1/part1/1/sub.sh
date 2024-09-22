@@ -5,7 +5,7 @@
 #SBATCH --output=job.o%J
 #
 # Account
-#SBATCH -A ISAAC-UTK0319
+#SBATCH --account=ISAAC-UTK0319
 #
 # Partition
 #SBATCH --partition=campus
