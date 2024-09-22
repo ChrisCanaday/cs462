@@ -20,8 +20,6 @@
 ## Number nodes
 #SBATCH --nodes=2
 #
-# CPUs per node
-#SBATCH --ntasks-per-node=48
 # Wall clock limit:
 #SBATCH --time=00:05:00
 #
