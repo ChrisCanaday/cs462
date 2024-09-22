@@ -1,0 +1,16 @@
+Process 1 received 0 from process 0
+Process 0 received 7 from process 7
+Process 0 received 1 from process 1
+Process 1 received 2 from process 2
+Process 2 received 1 from process 1
+Process 2 received 3 from process 3
+Process 3 received 2 from process 2
+Process 3 received 4 from process 4
+Process 4 received 3 from process 3
+Process 4 received 5 from process 5
+Process 5 received 4 from process 4
+Process 5 received 6 from process 6
+Process 6 received 5 from process 5
+Process 6 received 7 from process 7
+Process 7 received 6 from process 6
+Process 7 received 0 from process 0
