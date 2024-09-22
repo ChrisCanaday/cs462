@@ -65,6 +65,10 @@ int main(int argc, char **argv ) {
     printf("Process %d received %d from process %d\n", rank, to_recv, status.MPI_SOURCE);*/
 
     send_stuff(rank, size, true);
+
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
     send_stuff(rank, size, false);
 
     MPI_Barrier(MPI_COMM_WORLD);
