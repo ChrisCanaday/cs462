@@ -26,12 +26,12 @@ void send_to_target(int target, int *to_send, int len, int rank) {
 }
 
 int main(int argc, char **argv ) {
-    int rank, size;
-
     MPI_Init(&argc, &argv);
+    int rank, size;
 
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    
     int to_send = rank;
     int target = 0;
 
