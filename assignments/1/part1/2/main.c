@@ -20,17 +20,12 @@ int main(int argc, char **argv ) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (size < 96) {
-        MPI_Barrier(MPI_COMM_WORLD);
-        MPI_Finalize();
-        return 1;
-    }
-
     if (rank == 0 || rank == 95) {
         // send messages of size 2 byte -> 1 GB
-        for (int i = 1; i <= 30; i++) {
+        for (int i = 1; i <= 10; i++) {
             num_bytes = 1 << i;
             size_t size = (size_t) num_bytes;
+            printf("size: %lu || num_bytes %f\n", size, num_bytes);
             char* rand_text = (char*) malloc(size);
 
             if (rank == 0) {
