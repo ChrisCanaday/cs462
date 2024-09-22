@@ -44,8 +44,9 @@ int main(int argc, char **argv ) {
 
     //send_to_target(target, &to_send, sizeof(to_send), rank);
 
-    //to_send = rank;
+    to_send = rank;
     target = get_left_process(rank, size);
+    to_recv = 0;
     //send_to_target(target, &to_send, sizeof(to_send), rank);
 
     MPI_Send(&to_send, sizeof(to_send), MPI_INT, target, 0, MPI_COMM_WORLD);
