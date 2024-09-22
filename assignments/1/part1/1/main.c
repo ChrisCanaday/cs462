@@ -38,6 +38,7 @@ int main(int argc, char **argv ) {
     target = get_right_process(rank, size);
     send_to_target(target, &to_send, sizeof(to_send), rank);
 
+    to_send = rank;
     target = get_left_process(rank, size);
     send_to_target(target, &to_send, sizeof(to_send), rank);
 
