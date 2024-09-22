@@ -5,9 +5,10 @@
 #SBATCH --output=job.o%J
 #
 # Account
-#SBATCH --account=ISAAC-UTK0319
+#SBATCH --account=ACF-UTK0011
 #
 # Partition
+#SBATCH --partition=campus
 #SBATCH --qos=campus
 #
 # Number nodes
