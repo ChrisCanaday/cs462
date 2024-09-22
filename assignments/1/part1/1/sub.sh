@@ -8,7 +8,6 @@
 #SBATCH --account=ISAAC-UTK0319
 #
 # Partition
-#SBATCH --partition=campus
 #SBATCH --qos=campus
 #
 # Number nodes
