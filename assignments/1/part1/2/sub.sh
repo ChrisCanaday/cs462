@@ -18,7 +18,7 @@
 #SBATCH --ntasks-per-node=48
 #
 # Wall clock limit:
-#SBATCH --time=00:10:00
+#SBATCH --time=00:05:00
 #
 ## Command(s) to run (example):
 srun ./a.out
