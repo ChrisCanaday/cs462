@@ -7,7 +7,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h>
 #include "mpi.h"
 
 int main(int argc, char **argv ) {
@@ -21,32 +20,28 @@ int main(int argc, char **argv ) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    // send messages of size 2 byte -> 268 MB
-    for (int i = 1; i <= 28; i++) {
+    // send messages of size 2 byte -> 1 GB
+    for (int i = 1; i <= 30; i++) {
         num_bytes = pow(2, i);
         size_t size = (size_t) num_bytes;
         char* rand_text = (char*) malloc(size);
 
         if (rank == 0) {
-            srand(time(NULL));
-
-            // randomize the string
-            for (int j = 0; j < size-1; j++) {
-                rand_text[j] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[rand() % 26];
-            }
-            rand_text[size-1] = '\0';
+            MPI_Barrier(MPI_COMM_WORLD);
 
             start = MPI_Wtime();
             MPI_Send(rand_text, size, MPI_CHAR, 95, 0, MPI_COMM_WORLD);
             end = MPI_Wtime();
 
-            printf("Process %d took %lf seconds to send message of size %f to process %d\n", 0, start - end, num_bytes, 95);
+            printf("Process %d took %lf seconds to send message of size %f to process %d\n", 0, end - start, num_bytes, 95);
         }else if (rank == 95) {
+            MPI_Barrier(MPI_COMM_WORLD);
+
             start = MPI_Wtime();
             MPI_Recv(rand_text, size, MPI_CHAR, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
             end = MPI_Wtime();
 
-            printf("Process %d took %lf seconds to receive message of size %f to process %d\n", 95, start - end, num_bytes, status.MPI_SOURCE);
+            printf("Process %d took %lf seconds to receive message of size %f to process %d\n", 95, end - start, num_bytes, status.MPI_SOURCE);
         }
 
         free(rand_text);
