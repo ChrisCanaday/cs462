@@ -25,7 +25,6 @@ int main(int argc, char **argv ) {
         for (int i = 1; i <= 30; i++) {
             num_bytes = 1 << i;
             size_t size = (size_t) num_bytes;
-            printf("size: %lu || num_bytes %f\n", size, num_bytes);
             char* rand_text = (char*) malloc(size);
 
             if (rank == 0) {
