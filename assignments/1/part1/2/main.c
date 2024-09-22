@@ -21,6 +21,7 @@ int main(int argc, char **argv ) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     if (size < 96) {
+        MPI_Barrier(MPI_COMM_WORLD);
         MPI_Finalize();
         return 1;
     }
@@ -33,16 +34,12 @@ int main(int argc, char **argv ) {
             char* rand_text = (char*) malloc(size);
 
             if (rank == 0) {
-                MPI_Barrier(MPI_COMM_WORLD);
-
                 start = MPI_Wtime();
                 MPI_Send(rand_text, size, MPI_CHAR, 95, 0, MPI_COMM_WORLD);
                 end = MPI_Wtime();
 
                 printf("Process %d took %lf seconds to send message of size %f to process %d\n", 0, end - start, num_bytes, 95);
             }else if (rank == 95) {
-                MPI_Barrier(MPI_COMM_WORLD);
-
                 start = MPI_Wtime();
                 MPI_Recv(rand_text, size, MPI_CHAR, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
                 end = MPI_Wtime();
@@ -53,7 +50,7 @@ int main(int argc, char **argv ) {
             free(rand_text);
         }
     }
-
+    MPI_Barrier(MPI_COMM_WORLD);
     MPI_Finalize();
     return 0;
 }
