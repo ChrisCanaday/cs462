@@ -23,7 +23,7 @@ int main(int argc, char **argv ) {
 
     if (size < 96) {
         MPI_Finalize();
-        return;
+        return 1;
     }
 
     // send messages of size 2 byte -> 1 GB
