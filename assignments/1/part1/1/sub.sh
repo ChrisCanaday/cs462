@@ -20,6 +20,9 @@
 # Wall clock limit:
 #SBATCH --time=00:01:00
 #
+# Email me when done
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=ccanada6@vols.utk.edu
+#
 ## Command(s) to run (example):
-module load PE-intel
 srun ./a.out
