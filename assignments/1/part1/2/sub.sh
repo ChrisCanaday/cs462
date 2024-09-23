@@ -21,7 +21,7 @@
 #SBATCH --nodes=2
 #
 # Wall clock limit:
-#SBATCH --time=00:25:00
+#SBATCH --time=00:10:00
 #
 ## Command(s) to run (example):
 srun ./a.out
