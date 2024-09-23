@@ -30,9 +30,11 @@ int main(int argc, char **argv ) {
                 MPI_Send(rand_text, size, MPI_CHAR, 95, 0, MPI_COMM_WORLD);
                 end = MPI_Wtime();
 
-                printf("Process %d took %lf seconds to send message of size %f to process %d\n", 0, end - start, size, 95);
+                printf("Process %d took %lf seconds to send message of size %ld to process %d\n", 0, end - start, size, 95);
             }else if (rank == 95) {
+                //start = MPI_Wtime();
                 MPI_Recv(rand_text, size, MPI_CHAR, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
+                //end = MPI_Wtime();
             }
 
             free(rand_text);
