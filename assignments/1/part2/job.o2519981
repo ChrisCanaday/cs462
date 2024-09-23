@@ -1,0 +1,27 @@
+MPI_Gather | Rank 0 has integers: 1 2 3 4 5 6 7 8
+MPI_Allgather |Rank 0 has integers: 1 2 3 4 5 6 7 8
+MPI_Allgather |Rank 1 has integers: 1 2 3 4 5 6 7 8
+MPI_Allgather |Rank 2 has integers: 1 2 3 4 5 6 7 8
+MPI_Allgather |Rank 3 has integers: 1 2 3 4 5 6 7 8
+MPI_Allgather |Rank 4 has integers: 1 2 3 4 5 6 7 8
+MPI_Allgather |Rank 5 has integers: 1 2 3 4 5 6 7 8
+MPI_Allgather |Rank 6 has integers: 1 2 3 4 5 6 7 8
+MPI_Allgather |Rank 7 has integers: 1 2 3 4 5 6 7 8
+MPI_Reduce | Rank 0 sum: 36
+MPI_Reduce | Rank 0 prod: 40320
+MPI_Allreduce | Rank 0 sum: 36
+MPI_Allreduce | Rank 0 prod: 40320
+MPI_Allreduce | Rank 1 sum: 36
+MPI_Allreduce | Rank 1 prod: 40320
+MPI_Allreduce | Rank 2 sum: 36
+MPI_Allreduce | Rank 2 prod: 40320
+MPI_Allreduce | Rank 3 sum: 36
+MPI_Allreduce | Rank 3 prod: 40320
+MPI_Allreduce | Rank 4 sum: 36
+MPI_Allreduce | Rank 4 prod: 40320
+MPI_Allreduce | Rank 5 sum: 36
+MPI_Allreduce | Rank 5 prod: 40320
+MPI_Allreduce | Rank 6 sum: 36
+MPI_Allreduce | Rank 6 prod: 40320
+MPI_Allreduce | Rank 7 sum: 36
+MPI_Allreduce | Rank 7 prod: 40320
