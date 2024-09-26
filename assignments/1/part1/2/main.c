@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "mpi.h"
 
 int main(int argc, char **argv ) {
@@ -34,7 +35,8 @@ int main(int argc, char **argv ) {
                 }else if (rank == 95) {
                     MPI_Recv(rand_text, size, MPI_CHAR, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
                 }
-
+                
+                usleep(50);
                 free(rand_text);
             }
         }
