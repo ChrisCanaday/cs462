@@ -20,8 +20,8 @@ int main(int argc, char **argv ) {
 
     if (rank == 0 || rank == 95) {
         for (int reps = 0; reps < 20; reps++) {
-            // send messages of size 512 MiB -> 8 GB
-            for (int i = 29; i <= 33; i++) {
+            // send messages of size 1 MiB -> 1 GiB
+            for (int i = 19; i <= 30; i++) {
                 size_t size = 1 << i;
                 char* rand_text = (char*) malloc(size);
 
