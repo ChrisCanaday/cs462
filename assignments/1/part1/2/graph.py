@@ -41,5 +41,4 @@ print(f"MU={a} TAU={b} TRANSFER_RATE={1/a} Bytes ({1/a/1073741824} GiB/s) ({1/a/
 for xy in zip(df['Message_size'][0:end].to_numpy(), laterlist[0:end]):
     plt.annotate('(%s,%05.5s)' % xy, xy=xy, textcoords='data')
 
-
 plt.show()
