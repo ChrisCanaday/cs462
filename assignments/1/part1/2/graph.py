@@ -48,7 +48,9 @@ print(f"len1: {len(df['Message_size'][0:30].to_numpy())}")
 print(f'len2: {len(laterlist[0:30])}')
 
 a, b = np.polyfit(df['Message_size'][0:30].to_numpy(), laterlist[0:30], 1)
-plt.plot(df.Msize, a * df.Msize + b)
+plt.plot(df['Message_size'][0:30], a * df['Message_size'][0:30].to_numpy() + b)
+
+print(f"a={a} b={b}")
 
 
 #plt.plot(df.Msize, df.Average)
