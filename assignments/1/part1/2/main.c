@@ -23,6 +23,9 @@ int main(int argc, char **argv ) {
         for (int reps = 0; reps < 100; reps++) {
             // send messages of size 1 MiB -> 1 GiB
             for (int i = 19; i <= 30; i++) {
+
+                MPI_Barrier(MPI_COMM_WORLD);
+                
                 size_t size = 1 << i;
                 char* rand_text = (char*) malloc(size);
 
