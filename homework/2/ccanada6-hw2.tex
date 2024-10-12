@@ -2,6 +2,27 @@
 \usepackage{amsmath}
 \usepackage{enumerate}
 \usepackage{textcomp}
+\usepackage{tikz}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{calc}
+\newcounter{nodeidx}
+\setcounter{nodeidx}{1}
+
+\tikzset{block/.style={
+        font=\sffamily,
+        draw=black,
+        thin,
+        fill=pink!50,
+        rectangle split,
+        rectangle split horizontal,
+        rectangle split parts=#1,
+        outer sep=0pt},
+        %
+        gblock/.style={
+            block,
+            rectangle split parts=#1,
+            fill=green!30}
+        }
 
 \title{Homework 2}
 \author{Christopher Canaday}
@@ -16,19 +37,72 @@
     \begin{enumerate}[i.]
     \item (5 points) If $p_{0}$ wants the value of a local variable a to be known to all the 4 processors, which collective
     communication call needs to be executed?
+    \begin{enumerate}
+        \item You would use the broadcast communication call. MPI\_Bcast.
+    \end{enumerate}
 
     \item (5 points) If $p_{0}$ wants to distribute a locally defined array [$d_{0}$, $d_{1}$, $d_{2}$, $d_{3}$] amongst the 4 processors such
 that $d_{0}$ is sent to $p_{0}$, $d_{1}$ is sent to $p_{1}$, $d_{2}$ is sent to $p_{2}$ and $d_{3}$ is sent to $p_{3}$, which collective call needs to be
 executed.
+    \begin{enumerate}
+        \item You would use the scatter communication call. MPI\_Scatter.
+    \end{enumerate}
     \end{enumerate}
     
     \textbf{Problem 3:}
     \begin{enumerate}[i.]
     \item (5 points) Give an example of a bitonic sequence of 8 integers.
+    \begin{enumerate}
+        \item 2, 6, 7, 9, 11, 10, 5, 3
+    \end{enumerate}
 
     \item (5 points) Sort this bitonic sequence of 8 integers using bitonic splits. Show each bitonic splitting step
     during the sorting algorithm clearly.
+
+    \begin{center}
+
+        \def\lvld{1}                  % Choose level distance
+        \pgfmathsetmacro\shft{-4*\lvld} % Calculate the yshift for the green tree
+
+        \begin{tikzpicture}[level distance=\lvld cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm},
+            edgedown/.style={edge from parent/.style={draw=red,thick,-latex}},
+            edgeup/.style={edge from parent/.style={draw=green!50!black,thick,latex-}}
+            ]
+
+        % PINK TREE
+
+        \node[block=8] (A) {2 \nodepart{two} 6 \nodepart{three} 7 \nodepart{four} 9 \nodepart{five} 11 \nodepart{six}10 \nodepart{seven}5 \nodepart{eight}3}
+        [grow=down,edgedown]
+        child {node[block=4] (B1) {2 \nodepart{two} 6 \nodepart{three} 5 \nodepart{four} 3}
+            child {node[block=2] (C1) {2 \nodepart{two} 3}
+                child {node[block=1] (D1) {2}}
+                child {node[block=1] (D2) {3}}
+                }
+            child {node[block=2] (C2) {5 \nodepart{two} 6}
+                child {node[block=1] (D3) {5}}
+                child {node[block=1] (D4) {6}}
+                }
+            }
+        child {node[block=4] (B2) {11 \nodepart{two} 10 \nodepart{three} 7 \nodepart{four} 9}
+            child {node[block=2] (C3) {7 \nodepart{two} 9}
+                child {node[block=1] (D5) {7}}
+                child {node[block=1] (D6) {9}}
+            }
+            child {node[block=2] (C4) {11 \nodepart{two} 10}
+                child {node[block=1] (D7) {10}}
+                child {node[block=1] (D8) {11}}
+            }
+        };
+        \end{tikzpicture}
+
+    \textit{Figured out how to make this graph here: https://tex.stackexchange.com/questions/592155/how-to-draw-a-merge-sort-algorithm-figure}
+        \end{center}
+
     \end{enumerate}
+
 
     \textbf{Problem 4:} Matrix-Vector Multiplication
     \begin{enumerate}[i.]
@@ -51,7 +125,7 @@ defined as above.
     execution time of the fastest known sequential algorithm. A parallel algorithm is said to be cost-optimal
     if the cost of solving the parallel algorithm has the same asymptotic growth (in $\Theta$ terms) as a function of
     the input size as the fastest known sequential algorithm on a single processor. Since efficiency is the ratio
-    of sequential cost to parallel cost, a cost-optimal parallel system has an efficiency of $\Theta$(1) (that is, a constant). \\
+    of sequential cost to parallel cost, a cost-optimal parallel system has an efficiency of $\Theta$\(1\) (that is, a constant). \\
 
 
     \textbf{Problem 5:} Matrix-Matrix Multiplication
