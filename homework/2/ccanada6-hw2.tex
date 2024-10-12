@@ -3,161 +3,73 @@
 \usepackage{enumerate}
 \usepackage{textcomp}
 
-\title{Homework 1}
+\title{Homework 2}
 \author{Christopher Canaday}
 \date{\today}
 
 \begin{document}
     \maketitle
-    \textbf{Problem 1:} Let the strong speedup of a problem of size n that is computationally solved using \textit{P} processors
-by a parallel algorithm in time $T(n, P)$ be defined by:
-    \begin{equation}
-        S(p) = \frac{T(n,1)}{T(n,P)}
-    \end{equation}
-    and the efficiency of the same parallel algorithm be defined by
-    \begin{equation}
-        E(p) = \frac{S(p)}{P}
-    \end{equation}
-    Suppose a parallel algorithm has a parallel runtime complexity of:
-    \begin{equation}
-        T(n,p) = \Theta(\frac{n^2}{P} + \sqrt{n}) \phantom{text}\text{for } P \leq n^2
-    \end{equation}
+    \textbf{Problem 1:} (5 points) Describe the communication cost model used in class for complexity analyses of all
+    parallel algorithms. Be sure to describe all the assumptions underlying the cost model. \hfill \\
 
+    \textbf{Problem 2:} Assume that a pool of 4 processors {$p_{0}$, $p_{1}$, $p_{2}$, $p_{3}$} is available.
     \begin{enumerate}[i.]
-        \item What is the execution time of this parallel algorithm on a single processor (we assume a single
-        process is mapped to a single processor)?
-            \begin{enumerate}
-                \item The execution time of the parallel algorithm with a single processor would be:
-                \begin{equation}
-                    T(n,1) = \Theta(n^2 + \sqrt{n})
-                \end{equation}
-            \end{enumerate}
-        \item In terms of \textit{n}, at what processor count, $P_{\max}$, will the algorithm achieve maximum parallel
-        speedup?
-            \begin{enumerate}
-                \item The algorithm will achieve maximum parallel speedup when $P_{\max} = n^2$. The runtime complexity would be:
-                    \begin{align*}
-                        T(n, P_{\max}) & = \Theta(\frac{n^2}{P_{\max}} + \sqrt{n}) \phantom{text}\text{for } P_{\max} = n^2 \\
-                        & = \Theta(\frac{n^2}{n^2} + \sqrt{n}) \\
-                        & = \Theta(1 + \sqrt{n}) \\
-                        & = \Theta(\sqrt{n})
-                    \end{align*}
-                    The speedup $S(P_{\max})$ would be:
-                    \begin{align*}
-                        S(P_{\max}) & = \frac{T(n,1)}{T(n,P_{\max})} \\
-                        & = \frac{\Theta(n^2 + \sqrt{n})}{\Theta(\sqrt{n})} \\
-                        & = \Theta(\frac{n^2 + \sqrt{n}}{\sqrt{n}}) \\
-                        & = \Theta(\frac{n^2 + \sqrt{n}}{\sqrt{n}} * \frac{\sqrt{n}}{\sqrt{n}} ) \\
-                        & = \Theta(\frac{n^2\sqrt{n}  + n}{n}) \\
-                        & = \Theta(n\sqrt{n} + 1) \\
-                        & = \Theta(n\sqrt{n})
-                    \end{align*}
-            \end{enumerate}
-        \item What is the parallel efficiency achieved when $P_{\max}$ processors are used?
-            \begin{enumerate}
-                \item The parallel efficiency is:
-                \begin{align*}
-                    E({P_{\max}}) & = \frac{S(P_{\max})}{P_{\max}} \\
-                    & = \frac{n\sqrt{n}}{n^2} \\
-                    & = \frac{\sqrt{n}}{n}
-                \end{align*}
-            \end{enumerate}
-        \item Maximum parallel efficiency is achieved when $E(P)\approx1$. At what processor count will this
-        algorithm achieve its maximum parallel efficiency?
-            \begin{enumerate}
-                \item The maximum efficiency would be with 1 processor.
-                    \begin{align*}
-                        E(P) & = \frac{S(P)}{P} \phantom{text}\text{for } S(P)=\frac{T(n,1)}{T(n,P)} \text{ and } E(P) \approx 1 \\
-                        1 & \approx \frac{\frac{T(n,1)}{T(n,P)}}{P} \\
-                        1 & \approx \frac{\frac{n^2+\sqrt{n}}{\frac{n^2}{p}+\sqrt{n}}}{P} \\
-                        1 & \approx \frac{n^2+\sqrt{n}}{\frac{n^2}{P}+\sqrt{n}} * \frac{1}{P} \\
-                        1 & \approx \frac{n^2+\sqrt{n}}{n^2+P\sqrt{n}} \\
-                        n^2+P\sqrt{n} & \approx n^2+\sqrt{n} \\
-                        P\sqrt{n} & \approx \sqrt{n} \\
-                        P & \approx 1
-                    \end{align*}
-            \end{enumerate}
+    \item (5 points) If $p_{0}$ wants the value of a local variable a to be known to all the 4 processors, which collective
+    communication call needs to be executed?
+
+    \item (5 points) If $p_{0}$ wants to distribute a locally defined array [$d_{0}$, $d_{1}$, $d_{2}$, $d_{3}$] amongst the 4 processors such
+that $d_{0}$ is sent to $p_{0}$, $d_{1}$ is sent to $p_{1}$, $d_{2}$ is sent to $p_{2}$ and $d_{3}$ is sent to $p_{3}$, which collective call needs to be
+executed.
+    \end{enumerate}
+    
+    \textbf{Problem 3:}
+    \begin{enumerate}[i.]
+    \item (5 points) Give an example of a bitonic sequence of 8 integers.
+
+    \item (5 points) Sort this bitonic sequence of 8 integers using bitonic splits. Show each bitonic splitting step
+    during the sorting algorithm clearly.
     \end{enumerate}
 
-    \textbf{Problem 2:} The following is a polynomial of a single unknown variable x and degree n\textminus1 where $a_{0}$, $a_{1}$, · · · , $a_{n-1}$
-    are known constants.
-
-    \begin{equation}
-        P(x) = a_{0} + a_{1}x + a_{2}x^2 + a_{3}x^3 + \cdots + a_{n-1}x_{n-1}
-    \end{equation}
-
-    The goal here is to compute the value of the polynomial at a given value of x, say, x\textsubscript{0}, that is, evaluate $P(x_{0})$.
-    Describe step-by-step a parallel algorithm to compute $P(x_{0})$. Assume that n = k\textsubscript{1}p and p = 2\textsuperscript{k\textsubscript{{2}}} where k\textsubscript{1}
-    and k\textsubscript{2} are both positive integers greater than 1. What are the parallel computation and communication
-    costs of your algorithm.
-
+    \textbf{Problem 4:} Matrix-Vector Multiplication
     \begin{enumerate}[i.]
-        \item The problem is perfect for Horner's Method. The algorithm steps are:
-            \begin{enumerate}
-                \item Partition a\textsubscript{i} in parts and assign them to p processes.
-                \item Broadcast the value of x\textsubscript{0}.
-                \item Do parallel prefix with the multiplication operation.
-                \item Locally multiply the partial products with the right coefficient.
-                \item Locally add all the products.
-                \item Do a reduce to add all the local products together.
-            \end{enumerate}
-        \item The computation cost is:
-            \begin{equation}
-                {T(n,p)}_{comp} = \Theta(C_{op} * (\frac{n}{p} + \log_{2} p))
-            \end{equation}
-            Where C\textsubscript{op} is the cost of performing the multiplication operation. 
-            There are $\frac{n}{p}$ computations in each process and during the parallel prefix you will additionally multiply
-            $\log_{2}p$ times. There are also $\frac{n}{p}$ additions in each process, but this gets consumed by the $\Theta$.
-        \item The communication cost is:
-            \begin{equation}
-                {T(n,p)}_{comm} = C_{reduce} + C_{parallelPrefix} + C_{broadcast} + C_{personalizedSend}
-            \end{equation}
+    \item (5 points) The parallel complexity of a matrix-vector algorithm can be shown to be:
+    \begin{equation}
+        T(n,p) = O(\frac{n^2}{p} + \tau\log{p}+\mu{n})
+    \end{equation}
+    where the symbols have their usual meanings. What is the cost of this parallel algorithm where cost is
+defined as above.
 
-            Considering that p is guaranteed to be a power of two I am going to assume that the network is in a HyperCube configuration.
-            With a HyperCube Configuration the cost of a reduce would be:
-            \begin{equation}
-                C_{reduce}^{HyperCube} = \Theta((\tau + \mu m_{0})*\log_{2}p)
-            \end{equation}
-            Where m\textsubscript{0} is the message size. In this case the message size would be one number from each process. The cost for the parrallel prefix would be:
-            \begin{equation}
-                C_{parallelPrefix}^{HyperCube} = \Theta((\tau + \mu m_{0})*\log_{2}p)
-            \end{equation}
-            Where m\textsubscript{0} is a number being sent to the process to the right. The $\log_{2}p$ comes from the number of times this occurs during the parallel prefix.
-            The cost for the broadcast of x is:
-            \begin{equation}
-                C_{broadcast}^{HyperCube} = \Theta((\tau + \mu m_{0})*\log_{2}p)
-            \end{equation}
-            This operation is the same as reduce, but in reverse so it has the same cost. To send the a's we have to do a personalized send to give processes the correct value. The cost for a personalized send is:
-            \begin{equation}
-                C_{personalizedSend}^{HyperCube} = \Theta(\tau \log_{2}{p} + \mu m_{1}{p})
-            \end{equation}
-            Here m\textsubscript{1} is the size of $\frac{n}{p}$ numbers. In other words.
-            \begin{equation}
-                m_{1} = \frac{n}{p}*m_{0}
-            \end{equation}
-            Thus,
-            \begin{equation}
-                C_{personalizedSend}^{HyperCube} = \Theta(\tau \log_{2}{p} + \mu m_{0}{n})
-            \end{equation}
-            So the communication cost assuming a HyperCube network configuration is:
-            \begin{multline*}
-                {T(n,p)}_{comm}^{HyperCube} = \Theta((\tau + \mu m_{0})*\log_{2}p) \\
-                + \Theta((\tau + \mu m_{0})*\log_{2}p) \\
-                + \Theta((\tau + \mu m_{0})*\log_{2}p) \\
-                + \Theta(\tau \log_{2}{p} + \mu m_{0}{n}) \\
-            \end{multline*}
-            Which simplified is:
-            \begin{align*}
-                {T(n,p)}_{comm}^{HyperCube} &= \Theta((\tau + \mu m_{0})*\log_{2}p + \tau \log_{2}{p} + \mu m_{0}{n}) \\
-                &= \Theta(\tau \log_{2}p + \mu m_{0}\log_{2}p + \mu m_{0}{n}) \\
-                &= \Theta(\tau \log_{2}p + \mu m_{0}(\log_{2}p + {n})) \\
-            \end{align*}
-            So, the total cost is:
-            \begin{equation}
-                {T(n,p)}_{total}^{HyperCube} = \Theta(C_{op} * (\frac{n}{p} + \log_{2} p) + \tau \log_{2}p + \mu m_{0}(\log_{2}p + {n}))
-            \end{equation}
-
-            Where C\textsubscript{op} is the cost of the multiplication operation, m\textsubscript{0} is the size of a number, and $\mu$ is $\frac{1}{transferRate}$.
+    \item (5 points) (10 points) \textit{Cost-optimality} of this algorithm will be achieved when (a) $p = O(\sqrt{n})$, (b) $p = O(n)$ (c),
+    $p = O(n^2)$, or (d) $p = O(n^3)$. Choose the correct answer from the four given options and analytically
+    justify your choice.
     \end{enumerate}
 
+    \textbf{Cost Optimality} \\
+    The cost of solving a problem on a parallel system is defined as the product of the parallel runtime and
+    the number of processing elements used. In other words, it is the sum of the time that each processing
+    element spends solving the problem. The cost of solving a problem on a single processing element is the
+    execution time of the fastest known sequential algorithm. A parallel algorithm is said to be cost-optimal
+    if the cost of solving the parallel algorithm has the same asymptotic growth (in $\Theta$ terms) as a function of
+    the input size as the fastest known sequential algorithm on a single processor. Since efficiency is the ratio
+    of sequential cost to parallel cost, a cost-optimal parallel system has an efficiency of $\Theta$(1) (that is, a constant). \\
+
+
+    \textbf{Problem 5:} Matrix-Matrix Multiplication
+    \begin{enumerate}[i.]
+    \item (5 points) The parallel complexity of a simple matrix-matrix algorithm can be shown to be:
+    \begin{equation}
+        T(n,p) = O(\frac{n^3}{p} + \tau\log{p}+2\mu\frac{n^2}{\sqrt{p}})
+    \end{equation}
+    where the symbols once againhave their usual meanings. What is the cost of this parallel algorithm
+where cost is again defined as above.
+
+    \item (5 points) (10 points) \textit{Cost-optimality} of this algorithm will be achieved when (a) $p = O(\sqrt{n})$, (b) $p = O(n)$ (c),
+    $p = O(n^2)$, or (d) $p = O(n^3)$. Choose the correct answer from the four given options and analytically
+    justify your choice.
+    \end{enumerate}
+
+Note that you will need to know the complexities of the fastest sequential algorithms for matrix-vector and
+matrix-matrix multiplications, both of which were covered in class
+
+    
 \end{document}
