@@ -137,9 +137,14 @@ defined as above.
         &= O(n^2 + \tau{p}\log{p} + \mu{p}n)
     \end{align*}
 
-    \item (5 points) (10 points) \textit{Cost-optimality} of this algorithm will be achieved when (a) $p = O(\sqrt{n})$, (b) $p = O(n)$ (c),
+    \item (10 points) \textit{Cost-optimality} of this algorithm will be achieved when (a) $p = O(\sqrt{n})$, (b) $p = O(n)$ (c),
     $p = O(n^2)$, or (d) $p = O(n^3)$. Choose the correct answer from the four given options and analytically
     justify your choice.
+
+    \begin{enumerate}
+        \item The answer is B $p = O(n)$. This is the highest number of p's you can have and not exceed the cost of the serial algorithm.
+        If you substitute n for p in the above cost equation the highest term ends up being $n^2$. The serial complexity is $n^2$ so this is the cost optimal solution.
+    \end{enumerate}
     \end{enumerate}
 
 
@@ -159,9 +164,14 @@ where cost is again defined as above.
         &= O(n^3 + \tau{p}\log{p} + 2\mu{n^2}\sqrt{p})
     \end{align*}
 
-    \item (5 points) (10 points) \textit{Cost-optimality} of this algorithm will be achieved when (a) $p = O(\sqrt{n})$, (b) $p = O(n)$ (c),
+    \item (10 points) \textit{Cost-optimality} of this algorithm will be achieved when (a) $p = O(\sqrt{n})$, (b) $p = O(n)$ (c),
     $p = O(n^2)$, or (d) $p = O(n^3)$. Choose the correct answer from the four given options and analytically
     justify your choice.
+
+    \begin{enumerate}
+        \item The answer is C $p = O(n^2)$. The serial computation cost is $n^3$ so we need to make sure we have no terms larger than that.
+        This is because we get $n^2$ in the second term, and $n^3$ in the last term when we substitute $n^2$.
+    \end{enumerate}
     \end{enumerate}
 
 Note that you will need to know the complexities of the fastest sequential algorithms for matrix-vector and
