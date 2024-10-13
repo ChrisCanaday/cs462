@@ -110,29 +110,37 @@ executed.
 
     \end{enumerate}
 
-
-    \textbf{Problem 4:} Matrix-Vector Multiplication
-    \begin{enumerate}[i.]
-    \item (5 points) The parallel complexity of a matrix-vector algorithm can be shown to be:
-    \begin{equation}
-        T(n,p) = O(\frac{n^2}{p} + \tau\log{p}+\mu{n})
-    \end{equation}
-    where the symbols have their usual meanings. What is the cost of this parallel algorithm where cost is
-defined as above.
-
-    \item (5 points) (10 points) \textit{Cost-optimality} of this algorithm will be achieved when (a) $p = O(\sqrt{n})$, (b) $p = O(n)$ (c),
-    $p = O(n^2)$, or (d) $p = O(n^3)$. Choose the correct answer from the four given options and analytically
-    justify your choice.
-    \end{enumerate}
-
-    \textbf{Cost Optimality} \\
+    \textbf{Cost Optimality}
+    
     The cost of solving a problem on a parallel system is defined as the product of the parallel runtime and
     the number of processing elements used. In other words, it is the sum of the time that each processing
     element spends solving the problem. The cost of solving a problem on a single processing element is the
     execution time of the fastest known sequential algorithm. A parallel algorithm is said to be cost-optimal
     if the cost of solving the parallel algorithm has the same asymptotic growth (in $\Theta$ terms) as a function of
     the input size as the fastest known sequential algorithm on a single processor. Since efficiency is the ratio
-    of sequential cost to parallel cost, a cost-optimal parallel system has an efficiency of $\Theta$\(1\) (that is, a constant). \\
+    of sequential cost to parallel cost, a cost-optimal parallel system has an efficiency of $\Theta$(1) (that is, a constant). \\
+
+
+    \textbf{Problem 4:} Matrix-Vector Multiplication
+    \begin{enumerate}[i.]
+    \item (5 points) The parallel complexity of a matrix-vector algorithm can be shown to be:    
+    \begin{equation}
+        T(n,p) = O(\frac{n^2}{p} + \tau\log{p}+\mu{n})
+    \end{equation}    
+    where the symbols have their usual meanings. What is the cost of this parallel algorithm where cost is
+defined as above.
+
+    \begin{align*}
+        Cost &= T(n,p) * p\\
+        &= O(\frac{n^2}{p} + \tau\log{p}+\mu{n})*p\\
+        &= O(\frac{n^2*p}{p} + \tau\log{p}*p+\mu{n}*p)\\
+        &= O(n^2 + \tau{p}\log{p} + \mu{p}n)
+    \end{align*}
+
+    \item (5 points) (10 points) \textit{Cost-optimality} of this algorithm will be achieved when (a) $p = O(\sqrt{n})$, (b) $p = O(n)$ (c),
+    $p = O(n^2)$, or (d) $p = O(n^3)$. Choose the correct answer from the four given options and analytically
+    justify your choice.
+    \end{enumerate}
 
 
     \textbf{Problem 5:} Matrix-Matrix Multiplication
@@ -143,6 +151,13 @@ defined as above.
     \end{equation}
     where the symbols once againhave their usual meanings. What is the cost of this parallel algorithm
 where cost is again defined as above.
+
+    \begin{align*}
+        Cost &= T(n,p) * p\\
+        &= O(\frac{n^3}{p} + \tau\log{p}+2\mu\frac{n^2}{\sqrt{p}})*p\\
+        &= O(\frac{n^3*p}{p} + \tau\log{p}*p+2\mu\frac{n^2*p}{\sqrt{p}})\\
+        &= O(n^3 + \tau{p}\log{p} + 2\mu{n^2}\sqrt{p})
+    \end{align*}
 
     \item (5 points) (10 points) \textit{Cost-optimality} of this algorithm will be achieved when (a) $p = O(\sqrt{n})$, (b) $p = O(n)$ (c),
     $p = O(n^2)$, or (d) $p = O(n^3)$. Choose the correct answer from the four given options and analytically
