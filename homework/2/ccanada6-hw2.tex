@@ -31,7 +31,14 @@
 \begin{document}
     \maketitle
     \textbf{Problem 1:} (5 points) Describe the communication cost model used in class for complexity analyses of all
-    parallel algorithms. Be sure to describe all the assumptions underlying the cost model. \hfill \\
+    parallel algorithms. Be sure to describe all the assumptions underlying the cost model.
+    \begin{enumerate}
+        \item A pair of con nected processors can send message of size m to each other simultaneously in time.
+        \item A processor can send a message on only 1 of its links at a time.
+        \item A processor can receive a message on only 1 of its links at a time.
+        \item A processor can receive a message while sending another message at the same time on the same or a different link.
+        \item Processors use store-forward routing for communication.
+    \end{enumerate}
 
     \textbf{Problem 2:} Assume that a pool of 4 processors {$p_{0}$, $p_{1}$, $p_{2}$, $p_{3}$} is available.
     \begin{enumerate}[i.]
