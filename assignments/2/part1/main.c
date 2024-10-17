@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include <math.h>
 #include "mpi.h"
 
 
@@ -19,6 +18,7 @@ int main(int argc, char **argv ) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     int vals_per_rank = 64/size;
+    printf("rank %d: vals_per_rank = %d\n", rank, vals_per_rank);
     local_as = calloc(vals_per_rank, sizeof(double));
 
     if (rank == 0) {
@@ -28,6 +28,7 @@ int main(int argc, char **argv ) {
         srand(0);
         for (i = 0; i < 64; i++) {
             a[i] = (double)rand()/RAND_MAX;
+            printf("rank %d: a[%d] = %.8f\n", rank, i, a[i]);
         }
     }
 
@@ -37,8 +38,10 @@ int main(int argc, char **argv ) {
     // calculate x's
     double *xs = calloc(vals_per_rank, sizeof(double));
     double *xs2 = calloc(vals_per_rank, sizeof(double));
-    for (i = 0; i < vals_per_rank; i++) {
-        xs[i] = pow(x, i+1);
+    double tmp = x;
+    for (i = 0; i < vals_per_rank; i++, tmp *= x) {
+        xs[i] = tmp;
+        printf("rank %d: xs[%d] = %.8f\n", rank, i, xs[i]);
     }
     
     double max_x = xs[vals_per_rank-1];
@@ -47,6 +50,8 @@ int main(int argc, char **argv ) {
     // MPI_Exscan to get the result of the multiplication of the previous highest values.
     // aka the value of x that will become the basis for ours
     MPI_Exscan(&max_x, &x_to_mult, 1, MPI_DOUBLE, MPI_PROD, MPI_COMM_WORLD);
+
+    printf("rank %d: x_to_mult = %f\n", rank, x_to_mult);
 
     // multiply to make the values correct
     if (rank != 0) {
@@ -61,6 +66,8 @@ int main(int argc, char **argv ) {
     for (i = 0; i < vals_per_rank; i++) {
         local_sum += local_as[i] * xs[i];
     }
+
+    printf("rank %d: local_sum = %.8f\n", rank, local_sum);
 
     // MPI_Reduce
     double total_sum = 0;
