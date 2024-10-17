@@ -11,11 +11,11 @@
 #SBATCH --partition=campus
 #SBATCH --qos=campus
 #
-# Number of MPI tasks needed for use case (example):
-#SBATCH --ntasks=64
+# Number nodes
+#SBATCH --nodes=2
 #
-# Processors per task:
-#SBATCH --cpus-per-task=1
+# CPUs per node
+#SBATCH --ntasks-per-node=32
 #
 # Wall clock limit:
 #SBATCH --time=0-00:05:00
