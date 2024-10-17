@@ -31,6 +31,7 @@ int main(int argc, char **argv ) {
     }
 
     // scatter the a's to all processes
+    MPI_Barrier(MPI_COMM_WORLD);
     MPI_Scatter(a, vals_per_rank, MPI_DOUBLE, local_as, vals_per_rank, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     // calculate x's
@@ -46,6 +47,7 @@ int main(int argc, char **argv ) {
 
     // MPI_Exscan to get the result of the multiplication of the previous highest values.
     // aka the value of x that will become the basis for ours
+    MPI_Barrier(MPI_COMM_WORLD);
     MPI_Exscan(&max_x, &x_to_mult, 1, MPI_DOUBLE, MPI_PROD, MPI_COMM_WORLD);
 
     // multiply to make the values correct
@@ -64,6 +66,7 @@ int main(int argc, char **argv ) {
     // MPI_Reduce
     double total_sum = 0;
 
+    MPI_Barrier(MPI_COMM_WORLD);
     MPI_Reduce(&local_sum, &total_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
