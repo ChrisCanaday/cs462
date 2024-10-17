@@ -18,7 +18,7 @@
 #SBATCH --cpus-per-task=1
 #
 # Wall clock limit:
-#SBATCH --time=0-00:01:00
+#SBATCH --time=0-00:05:00
 #
 ## Command(s) to run (example):
 srun ./a.out
