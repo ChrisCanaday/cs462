@@ -12,4 +12,5 @@ tar:
 	tar -cvf ccanada6_assignment_2.tar.gz ccanada6_submission
 
 clean:
-	rm ccanada6_assignment_2.tar.gz
+	rm -f ccanada6_assignment_2.tar.gz
+	rm -rf ccanada6_submission
