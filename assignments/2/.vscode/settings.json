@@ -4,6 +4,7 @@
         "string_view": "c",
         "initializer_list": "c",
         "utility": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "string.h": "c"
     }
 }
