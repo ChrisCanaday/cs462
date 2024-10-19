@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job name:
-#SBATCH --job-name=Assignment_1_P1.1
+#SBATCH --job-name=Assignment_2_P2.P1.1p
 #SBATCH --error=job.e%J
 #SBATCH --output=job.o%J
 #
@@ -15,10 +15,10 @@
 #SBATCH --nodes=1
 #
 # CPUs per node
-#SBATCH --ntasks-per-node=8
+#SBATCH --ntasks-per-node=1
 #
 # Wall clock limit:
 #SBATCH --time=0-00:01:00
 #
 ## Command(s) to run (example):
-srun ./a.out
+srun ./a.out 10000000
