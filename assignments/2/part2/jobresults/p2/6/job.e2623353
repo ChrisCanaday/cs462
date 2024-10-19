@@ -1,0 +1,8 @@
+srun: error: fwd_tree_thread: can't find address for host clr1538, check slurm.conf
+srun: error: Task launch for StepId=2623353.0 failed on node clr1538: Can't find an address, check slurm.conf
+srun: error: Application launch failed: Can't find an address, check slurm.conf
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: ber1432: task 11: Killed
+slurmstepd: error: *** STEP 2623353.0 ON ber1415 CANCELLED AT 2024-10-19T16:41:46 ***
+srun: error: ber1415: tasks 0-2: Killed
+srun: error: ber1430: tasks 3-10: Killed
