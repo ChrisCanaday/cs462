@@ -63,12 +63,13 @@ void print_vector(int length, double* vector) {
 
 double* matrix_mult_by_vector(int n, double** a, double* x)
 {
-    double* y = malloc(sizeof(double) * n);
+    double* y = calloc(n, sizeof(double));
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            y[i] += a[i][j] * x[j];
+            y[i] += a[i][j] *  x[j];
         }
+
     }
 
     return y;
@@ -89,7 +90,17 @@ int main(int argc, char** argv)
     double* y = matrix_mult_by_vector(n, a, x);
     double end = MPI_Wtime();
 
-    printf("time to compute y = %lf seconds\n", end-start);
+    printf("time to compute y = %.10lf seconds\n", end-start);
+
+    print_vector(n,y);
+
+    free(y);
+    free(x);
+    for(int i = 0; i < n; i++) {
+        free(a[i]);
+    }
+
+    free(a);
 
     MPI_Finalize();
     return 0;
