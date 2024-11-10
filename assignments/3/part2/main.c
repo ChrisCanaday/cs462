@@ -100,7 +100,7 @@ int main(int argc, char **argv ) {
         return 0;
     }
 
-    printf("rank: %d\n", rank);
+    printf("rank %d start\n", rank);
     
     double start = MPI_Wtime();
     int p = (int) sqrt(size);
@@ -115,14 +115,19 @@ int main(int argc, char **argv ) {
     double*** submatrices = NULL;
     double* oneD = NULL;
 
+    printf("rank %d allocation done\n", rank);
+
     // create the submatrices of a
     if (rank == 0) {
         submatrices = gen_submatrices(vals_per_proc, size, a);
         oneD = oneDify(vals_per_proc, size, submatrices);
     }
 
+    printf("rank %d scatter start\n", rank);
+
     // send out all the submatrices of a
     MPI_Scatter(oneD, vals_per_proc*vals_per_proc, MPI_DOUBLE, local_as, vals_per_proc*vals_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    printf("rank %d scatter end\n", rank);
 
     // free the small a stuff
     if (rank == 0) {
@@ -144,11 +149,14 @@ int main(int argc, char **argv ) {
     int col_color = rank % p;
     int diag_color = (rank/p == rank%p) ? 0 : 1;
 
+    printf("rank %d split start\n", rank);
+
     // create the communicators
     MPI_Comm row_comm, col_comm, diag_comm;
     MPI_Comm_split(MPI_COMM_WORLD, row_color, rank, &row_comm);
     MPI_Comm_split(MPI_COMM_WORLD, col_color, rank, &col_comm);
     MPI_Comm_split(MPI_COMM_WORLD, diag_color, rank, &diag_comm);
+    printf("rank %d split end\n", rank);
 
     // grab your row rank
     // (don't need col or diag rank for our uses)
@@ -157,12 +165,20 @@ int main(int argc, char **argv ) {
 
     // diagonal
     if (rank/p == rank%p) {
+        printf("diag rank %d scatter start\n", rank);
+        
         // move the portions of x to the correct diagonal proc
         MPI_Scatter(x, vals_per_proc, MPI_DOUBLE, local_xs, vals_per_proc, MPI_DOUBLE, 0, diag_comm);
+        printf("diag rank %d scatter end\n", rank);
     }
+
+    printf("rank %d col Bcast start\n", rank);
 
     // broadcast the x to the rest of the column
     MPI_Bcast(local_xs, vals_per_proc, MPI_DOUBLE, rank%p, col_comm);
+    printf("rank %d col Bcast end\n", rank);
+
+    printf("rank %d calc y start\n", rank);
 
     // all procs should have their local x now :D
     // do the local calculation to get this procs section of the y vector
@@ -171,6 +187,7 @@ int main(int argc, char **argv ) {
             local_ys[i] += local_as[i*vals_per_proc+j] * local_xs[j];
         }
     }
+    printf("rank %d calc y end\n", rank);
 
     double* row_ys = NULL;
 
@@ -179,17 +196,26 @@ int main(int argc, char **argv ) {
         row_ys = malloc(sizeof(double)*vals_per_proc);
     }
 
-    // add up everythin in your row. result is in the farthest right proc in the row
+    printf("rank %d row reduce start\n", rank);
+
+    // add up everything in your row. result is in the farthest right proc in the row
     MPI_Reduce(local_ys, row_ys, vals_per_proc, MPI_DOUBLE, MPI_SUM, p-1, row_comm);
+
+    printf("rank %d row reduce end\n", rank);
 
     // concat all columns together
     double* final_y = malloc(sizeof(double)*n);
     if (p-1 == rank%p) {
+        printf("rank %d col Allgather start\n", rank);
+
         MPI_Allgather(row_ys, vals_per_proc, MPI_DOUBLE, final_y, vals_per_proc, MPI_DOUBLE, col_comm);
+        printf("rank %d col Allgather end\n", rank);
     }
 
     // broadcast the answer to all the procs (bottom right proc will be the sender)
+    printf("rank %d Bcast start\n", rank);
     MPI_Bcast(final_y, n, MPI_DOUBLE, size-1, MPI_COMM_WORLD);
+    printf("rank %d Bcast end\n", rank);
 
     double end = MPI_Wtime();
 
