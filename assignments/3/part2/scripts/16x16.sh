@@ -11,9 +11,12 @@
 #SBATCH --partition=campus
 #SBATCH --qos=campus
 #
-# Number nodes
+# Number Nodes
 #SBATCH --nodes=6
+# Number tasks
 #SBATCH --ntasks=256
+# Tasks per node
+#SBATCH --ntasks-per-node=43
 #
 # Wall clock limit:
 #SBATCH --time=0-00:01:00
