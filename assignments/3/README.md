@@ -16,3 +16,6 @@ Contains graphing code
 My strong speedup graph looks like trash. I assume this is because of the different runs using different amounts of nodes so communication time varies significantly. (The first few runs are on 1 node so communication time is very small.)
 
 I also assume that the speedup would be better if the matrix was bigger.
+
+* strong_speedup.png is the normal strong speedup.
+* strong_speedup_1x1.png is the strong speedup compared to the 1x1 results from part2.
