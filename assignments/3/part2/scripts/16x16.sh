@@ -12,6 +12,7 @@
 #SBATCH --qos=campus
 #
 # Number nodes
+#SBATCH --nodes=6
 #SBATCH --ntasks=256
 #
 # Wall clock limit:
