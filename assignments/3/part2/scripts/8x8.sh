@@ -12,10 +12,10 @@
 #SBATCH --qos=campus
 #
 # Number nodes
-#SBATCH --nodes=4
+#SBATCH --nodes=2
 #
 # CPUs per node
-#SBATCH --ntasks-per-node=16
+#SBATCH --ntasks-per-node=32
 #
 # Wall clock limit:
 #SBATCH --time=0-00:01:00
