@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 # values pulled from the jobresults files of part1 and part2
 serial_time = 0.0000471942 # seconds
 parallel_time = [0.0055128634, # 2 x 2
-                 0.0030495860, # 4 x 4
+                 0.0129183518, # 4 x 4
                  0.0963258766, # 8 x 8
                  2.2773004099, # 16x16
                  ]
