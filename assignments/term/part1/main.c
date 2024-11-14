@@ -25,45 +25,6 @@ double** generate_matrix(int n, double val)
     return ret;
 }
 
-void print_matrix(int rank, int height, int width, double** matrix)
-{
-    printf("mat rank: %d[\n", rank);
-    for(int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
-            if (i == 0 && j == 0) {
-                printf("%lf", matrix[i][j]);
-            }else {
-                printf(" %lf", matrix[i][j]);
-            }
-        }
-        printf("\n");
-    }
-    printf("]\n\n");
-}
-
-void print_vector(int length, double* vector) {
-    printf("vec[");
-    for(int i = 0; i < length; i++) {
-        if (i == 0) {
-            printf("%lf", vector[i]);
-        }else {
-            printf(" %lf", vector[i]);
-        }
-    }
-    printf("]\n\n");
-}
-
-void print_scatter_response(int rank, int n_per_proc, double* vector) {
-    printf("scat rank: %d[\n", rank);
-    for(int i = 0; i < n_per_proc; i++) {
-        for (int j = 0; j < n_per_proc; j++) {
-            printf("%lf ", vector[i*n_per_proc + j]);
-        }
-        printf("\n");
-    }
-    printf("]\n\n");
-}
-
 bool strmatch(char* first, char* second)
 {
     return (strcmp(first, second) == 0);
@@ -194,6 +155,7 @@ int main(int argc, char** argv)
     double* scatterable_subA = NULL; // for MPI_Scatter
     double* scatterable_subB = NULL; // for MPI_Scatter
     int rank, size;
+    double start, end, comp_time = 0, comm_time = 0, total_time = 0;
     
     // bail early if args are garbage
     if (!parse_args(argc, argv)) {
@@ -213,8 +175,6 @@ int main(int argc, char** argv)
     int down = (row+1 == p) ? 0 + col: (row+1)*p + col;
     int left = (col-1 < 0) ? (p-1)+row*p: col-1 + row*p;
     int right = (col+1 == p) ? 0 + row*p: col+1 + row*p;
-
-    if (rank == 0)printf("args process[%d]:\n\tp=%d\n\tP=%d\n\tn=%d\n", rank, p, P, n);
 
     if (rank == 0) {
         A = generate_matrix(n, 1);
@@ -255,8 +215,12 @@ int main(int argc, char** argv)
     double* local_subA = malloc(sizeof(double) * n_per_proc*n_per_proc);
     double* local_subB = malloc(sizeof(double) * n_per_proc*n_per_proc);
 
+    start = MPI_Wtime();
     MPI_Scatter(scatterable_subA, n_per_proc*n_per_proc, MPI_DOUBLE, local_subA, n_per_proc*n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Scatter(scatterable_subB, n_per_proc*n_per_proc, MPI_DOUBLE, local_subB, n_per_proc*n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    end = MPI_Wtime();
+
+    comm_time += end - start;
 
     // its cannon time baby
     double* tmp = NULL;
@@ -267,11 +231,15 @@ int main(int argc, char** argv)
     MPI_Request request;
     MPI_Status status;
     for (int i = 0; i < p; i++) {
+        start = MPI_Wtime();
         tmp = matrix_mult(n_per_proc, local_subA, local_subB);
-
         add_matrix_to_output(n_per_proc, tmp, C);
+        end = MPI_Wtime();
+
+        comp_time += end - start;
 
         // shift a rows left
+        start = MPI_Wtime();
         for (int j = 0; j < p; j++) {
             for (int k = 0; k < j; k++) {
                 // receive from right
@@ -300,9 +268,18 @@ int main(int argc, char** argv)
                 memcpy(local_subB, tmpB, sizeof(double)*n_per_proc*n_per_proc);
             }
         }
+
+        end = MPI_Wtime();
+        comm_time += end - start;
     }
 
-    print_scatter_response(rank, n_per_proc, C);
+    if (rank == 0) {
+        total_time = comm_time + comp_time;
+
+        printf("comm: %.10lf seconds\n", comm_time);
+        printf("comp: %.10lf seconds\n", comp_time);
+        printf("total: %.10lf seconds\n", total_time);
+    }
 
     MPI_Finalize();
     return 0;
