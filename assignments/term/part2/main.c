@@ -194,6 +194,7 @@ int main(int argc, char** argv)
     double* scatterable_subA = NULL; // for MPI_Scatter
     double* scatterable_subB = NULL; // for MPI_Scatter
     int rank, size;
+    double start, end, comp_time = 0, comm_time = 0, total_time = 0;
     
     // bail early if args are garbage
     if (!parse_args(argc, argv)) {
@@ -245,16 +246,21 @@ int main(int argc, char** argv)
     // load up the bottom layer with the data
     double* local_subA = malloc(sizeof(double)*n_per_proc*n_per_proc);
     double* local_subB = malloc(sizeof(double)*n_per_proc*n_per_proc);
+
+    start = MPI_Wtime();
     if(layer == 0) {
         MPI_Scatter(scatterable_subA, n_per_proc*n_per_proc, MPI_DOUBLE, local_subA, n_per_proc*n_per_proc, MPI_DOUBLE, 0, layer_comm);
         MPI_Scatter(scatterable_subB, n_per_proc*n_per_proc, MPI_DOUBLE, local_subB, n_per_proc*n_per_proc, MPI_DOUBLE, 0, layer_comm);
     }
+    end = MPI_Wtime();
+    comm_time += end-start;
 
     // now we need to get the rows to the right layer
     // big ol if statement
     // basically every proc will send up if it needs to
     MPI_Status a;
     MPI_Status b;
+    start = MPI_Wtime();
     if (layer > 0) {
         if (layer == row) MPI_Recv(local_subA, n_per_proc*n_per_proc, MPI_DOUBLE, row*p + col, 0, MPI_COMM_WORLD, &a);
         if (layer == col) MPI_Recv(local_subB, n_per_proc*n_per_proc, MPI_DOUBLE, row*p + col, 1, MPI_COMM_WORLD, &b);
@@ -262,27 +268,46 @@ int main(int argc, char** argv)
         if (row > 0) MPI_Send(local_subA, n_per_proc*n_per_proc, MPI_DOUBLE, row*p*p + row*p + col, 0, MPI_COMM_WORLD);
         if (col > 0) MPI_Send(local_subB, n_per_proc*n_per_proc, MPI_DOUBLE, col*p*p + row*p + col, 1, MPI_COMM_WORLD);
     }
+    end = MPI_Wtime();
+    comm_time += end-start;
     
     // now we propgate to the other rows/cols in the layer
+    start = MPI_Wtime();
     MPI_Bcast(local_subA, n_per_proc*n_per_proc, MPI_DOUBLE, layer, internal_col_comm);
     MPI_Bcast(local_subB, n_per_proc*n_per_proc, MPI_DOUBLE, layer, internal_row_comm);
+    end = MPI_Wtime();
+    comm_time += end-start;
 
     // multiply locally
+    start = MPI_Wtime();
     double* local_C = matrix_mult(n_per_proc, local_subA, local_subB);
+    end = MPI_Wtime();
+    comp_time += end-start;
+
     double* C = malloc(sizeof(double)*n_per_proc*n_per_proc);
 
     // add all the stuff up
+    start = MPI_Wtime();
     MPI_Allreduce(local_C, C, n_per_proc*n_per_proc, MPI_DOUBLE, MPI_SUM, layer_to_layer_comm);
+    end = MPI_Wtime();
+    comm_time += end-start;
 
     // gather all the Cs to proc 0
     double* all_of_c = NULL;
     if (rank == 0) all_of_c = malloc(sizeof(double)*n*n);
-
+    start = MPI_Wtime();
     if (layer == 0) MPI_Gather(C, n_per_proc*n_per_proc, MPI_DOUBLE, all_of_c, n_per_proc*n_per_proc, MPI_DOUBLE, 0, layer_comm);
-
+    end = MPI_Wtime();
+    comm_time += end-start;
     if (rank == 0) {
-        print_vector(n*n, all_of_c);
+        total_time = comm_time + comp_time;
+
+        printf("comm: %.10lf seconds\n", comm_time);
+        printf("comp: %.10lf seconds\n", comp_time);
+        printf("total: %.10lf seconds\n", total_time);
     }
+
+
 
     // massive stack of frees
     if (all_of_c) free(all_of_c);
