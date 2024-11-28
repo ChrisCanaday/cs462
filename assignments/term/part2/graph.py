@@ -3,23 +3,27 @@ import matplotlib.pyplot as plt
 comm_times = [0.0116205487, #  1x1x1
               0.0345491125, #  2x2x2
               0.0389265239, #  4x4x4
+              0.8548686944, #  8x8x8
               ]
 
 comp_times = [9.0052927778,  # 1x1x1
               1.2183946498,  # 2x2x2
               0.0684560120,  # 4x4x4
+              0.0086095084,  # 8x8x8
               ]
 total_times = [9.0169133265,  #  1x1x1
                1.2529437623,  #  2x2x2
                0.1073825359,  #  4x4x4
+               0.8634782028,  #  8x8x8
                ]
 
 speedup = [total_times[0] / total_times[0],
            total_times[0] / total_times[1],
            total_times[0] / total_times[2],
+           total_times[0] / total_times[3],
            ]
 
-x = [1, 8, 64]
+x = [1, 8, 64, 512]
 
 print(f'speedup: {speedup}')
 
